@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProcessPodcast\CreatePodcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::namespace('ProcessPodcast')->group(function () {
+    Route::get('podcast-form', [CreatePodcast::class, 'showForm']);
+    Route::post('podcast-create', [CreatePodcast::class, 'createPodcast']);
+});
+
+Route::prefix('jobs')->group(function () {
+    Route::queueMonitor();
 });
