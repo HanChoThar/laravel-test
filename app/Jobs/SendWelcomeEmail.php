@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
@@ -34,8 +35,17 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
+        info('Deploying');
+
         sleep(3);
         // $this->release(20);
-        info('hello there');
+        info('Done deployed');
+    }
+
+    public function middleware()
+    {
+        return [
+            new WithoutOverlapping('deployments', 60)
+        ];
     }
 }

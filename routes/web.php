@@ -55,11 +55,15 @@ Route::get('/job-batching', function() {
         new jobBatch('hello three'),
     ];
 
-    Bus::batch($batch)->name('batching-test')->allowFailures()->dispatch();
+    Bus::batch($batch)->name('batching-test')
+    ->allowFailures()
+    ->catch(function ($batch, $e) {
+        
+    })
+    ->dispatch();
 
     echo "Successfully job batching queue job";
 });
-
 
 Route::prefix('jobs')->group(function () {
     Route::queueMonitor();
